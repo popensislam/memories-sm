@@ -1,22 +1,43 @@
-import { Paper, TextField, Typography, Button } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import {
+  Paper,
+  TextField,
+  Typography,
+  Button,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import { ChangeEvent, useState, useEffect } from "react";
 import FileBase64 from "react-file-base64";
-import { useAddPostMutation } from "../../store/services/memoriesApi";
+import { toast, ToastContainer } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  useAddPostMutation,
+  useUpdatePostMutation,
+} from "../../store/services/memoriesApi";
+import { clearCurrentState } from "../../store/slices/postsSlice";
 
+import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
 
 const Form = () => {
   const classes = useStyles();
-  const [postAddPost, {data}] = useAddPostMutation();
-  const [postData, setPostData] = useState({
+  const [postAddPost] = useAddPostMutation();
+  const [updatePost] = useUpdatePostMutation();
+  const [postData, setPostData] = useState<any>({
     creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
+  const dispatch = useAppDispatch();
+  const { currentId, currentPost } = useAppSelector((state) => state.posts);
 
-  console.log(data)
+  useEffect(() => {
+    if (currentPost !== null) {
+      setPostData(currentPost);
+    }
+  }, [currentPost]);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,13 +45,31 @@ const Form = () => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
 
-  const clear = () => {};
+  const clear = () => {
+    dispatch(clearCurrentState());
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
 
-  const handleSubmit = (
-    e: ChangeEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    postAddPost(postData);
+    try {
+      if (currentId) {
+        await updatePost(postData);
+      } else {
+        await postAddPost(postData);
+      }
+      toast.success("🦄 It is done!");
+      clear();
+    } catch (error) {
+      toast.error("Something went wrong :(");
+      console.error("rejected", error);
+    }
   };
 
   return (
@@ -41,7 +80,9 @@ const Form = () => {
         className={classes.form}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Creating a Memory</Typography>
+        <Typography variant="h6">
+          {currentId !== null ? "Editing a memory" : "Creating a Memory"}
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"

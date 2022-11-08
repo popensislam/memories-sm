@@ -1,10 +1,14 @@
 
 export interface Posts {
-  __v: number;
   _id: string;
-  createdAt: Date;
+  title: string;
+  message: string;
+  creator: string;
+  tags: string[];
+  selectedFile: string;
   likeCount: number;
-  tags: any[];
+  createdAt: string;
+  __v: number;
 }
 
 export interface Post {
