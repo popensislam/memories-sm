@@ -3,6 +3,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AllByAttribute } from "@testing-library/react";
 import { Post, Posts } from "./interfaces";
 
+enum Method {
+  POST = "POST",
+  GET = "GET",
+  PATCH = "PATCH",
+  DELETE = "DELETE",
+}
+
 export const memoriesApi = createApi({
   reducerPath: "memoriesApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/posts" }),
@@ -10,37 +17,37 @@ export const memoriesApi = createApi({
     getAllPosts: builder.query<Posts[] | undefined, void>({
       query: () => "/",
     }),
-    addPost: builder.mutation<any, Post>({
+    addPost: builder.mutation<Posts, Post>({
       query: (post) => ({
         url: "/",
-        method: "POST",
+        method: Method.POST,
         body: post,
       }),
     }),
-    updatePost: builder.mutation<any, any>({
+    updatePost: builder.mutation<Posts, Posts>({
       query: (post) => ({
         url: `/${post._id}`,
-        method: "PATCH",
+        method: Method.PATCH,
         body: post,
       }),
     }),
-    deletePost: builder.mutation<{message: string}, string>({
+    deletePost: builder.mutation<{ message: string }, string>({
       query: (id) => ({
         url: `/${id}`,
-        method: "DELETE",
-      })
+        method: Method.DELETE,
+      }),
     }),
-    likePost: builder.mutation<void, string>({
+    likePost: builder.mutation<Posts, string>({
       query: (id) => ({
         url: `/${id}/likePost`,
-        method: 'PATCH',
-      })
-    })
+        method: Method.PATCH,
+      }),
+    }),
   }),
 });
 
-export const { 
-  useGetAllPostsQuery, 
+export const {
+  useGetAllPostsQuery,
   useAddPostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,

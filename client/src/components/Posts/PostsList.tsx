@@ -5,17 +5,19 @@ import { useStyles } from "./styles";
 import { Grid, CircularProgress } from "@mui/material";
 import { Posts } from "../../store/services/interfaces";
 import { useAppSelector } from "../../store/hooks";
+import { useTheme } from '@mui/material/styles';
 
 const PostsList = () => {
   const classes = useStyles();
-  const { currentPost } = useAppSelector((state) => state.posts);
+  const theme = useTheme()
+  const { currentPost, actAddPost } = useAppSelector((state) => state.posts);
   const { data: posts, isFetching, error, refetch } = useGetAllPostsQuery();
 
   useEffect(() => {
     if (currentPost === null) {
         refetch();
     }
-  }, [currentPost]);
+  }, [currentPost, actAddPost]);
 
   if (isFetching) {
     return (

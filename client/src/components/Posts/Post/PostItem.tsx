@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 
 // MUI
 import {
@@ -20,8 +20,11 @@ import { PostProps } from "../interfaces";
 // RTK
 import { useAppDispatch } from "../../../store/hooks";
 import { setCurrentId } from "../../../store/slices/postsSlice";
-import { handleDeletePost, handleLikePost } from "../../../store/services";
-import { useDeletePostMutation, useLikePostMutation } from "../../../store/services/memoriesApi";
+import { fetchDeletePost, fetchLikePost } from "../../../store/services";
+import {
+  useDeletePostMutation,
+  useLikePostMutation,
+} from "../../../store/services/memoriesApi";
 
 // STYLES
 import { useStyles } from "./styles";
@@ -32,10 +35,19 @@ const PostItem: FC<PostProps> = ({ post }) => {
   const [deletePost] = useDeletePostMutation();
   const [likePost] = useLikePostMutation();
 
+  const [likeCount, setLikeCount] = useState(post?.likeCount);
+
   const handleSetId = () => {
     dispatch(setCurrentId(post));
   };
- 
+  const handleLike = async () => {
+    try {
+      await fetchLikePost(post._id, likePost);
+      setLikeCount((prev) => prev + 1);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
 
   return (
     <Card className={classes.card}>
@@ -56,25 +68,33 @@ const PostItem: FC<PostProps> = ({ post }) => {
         </Button>
       </div>
       <div className={classes.details}>
-        <Typography>{post.tags.map((tag: string) => `#${tag}`)}</Typography>
+        <Typography>{post.tags.map((tag: string) => ` #${tag}`)}</Typography>
       </div>
       <Typography className={classes.title} variant="h5" gutterBottom>
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+        >
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button onClick={() => handleLikePost(post._id, likePost)} size="small" color="primary">
+        <Button onClick={() => handleLike()} size="small" color="primary">
           <ThumbUpAltIcon fontSize="small" />
-          Like
-          {post.likeCount}
+          &nbsp;Like&nbsp;
+          {likeCount}
         </Button>
-        <Button size="small" color="primary" onClick={() => handleDeletePost(post._id, deletePost)}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => fetchDeletePost(post._id, deletePost)}
+        >
           <DeleteIcon fontSize="small" />
-          Delete
+          &nbsp;Delete&nbsp;
         </Button>
       </CardActions>
     </Card>

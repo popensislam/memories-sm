@@ -4,13 +4,17 @@ import { Posts } from '../services/interfaces'
 interface PostsSlice {
   posts: [],
   currentId: string | null,
-  currentPost: Posts | null
+  currentPost: Posts | null,
+  actAddPost: boolean,
+  themeMode: any
 }
 
 const initialState: PostsSlice = {
   posts: [],
   currentId: null,
-  currentPost: null
+  currentPost: null,
+  actAddPost: true,
+  themeMode: 'light',
 }
 
 const postsSlice = createSlice({
@@ -24,9 +28,19 @@ const postsSlice = createSlice({
     clearCurrentState(state) {
       state.currentId = null
       state.currentPost = null
+    },
+    setActAddPost(state) {
+      state.actAddPost = !state.actAddPost
+    },
+    setThemeMode(state) {
+      if (state.themeMode === 'light') {
+        state.themeMode = 'dark'
+      } else {
+        state.themeMode = 'light'
+      }
     }
   }
 })
 
-export const { setCurrentId, clearCurrentState } = postsSlice.actions 
+export const { setCurrentId, clearCurrentState, setActAddPost, setThemeMode } = postsSlice.actions 
 export default postsSlice.reducer

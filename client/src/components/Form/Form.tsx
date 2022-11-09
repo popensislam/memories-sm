@@ -14,7 +14,7 @@ import {
   useAddPostMutation,
   useUpdatePostMutation,
 } from "../../store/services/memoriesApi";
-import { clearCurrentState } from "../../store/slices/postsSlice";
+import { clearCurrentState, setActAddPost } from "../../store/slices/postsSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
@@ -63,6 +63,7 @@ const Form = () => {
         await updatePost(postData);
       } else {
         await postAddPost(postData);
+        dispatch(setActAddPost())
       }
       toast.success("🦄 It is done!");
       clear();
@@ -71,6 +72,8 @@ const Form = () => {
       console.error("rejected", error);
     }
   };
+
+  console.log(postData.tags)
 
   return (
     <Paper className={classes.paper}>
@@ -113,7 +116,7 @@ const Form = () => {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(e) => handleOnChange(e)}
+          onChange={(e) => setPostData({...postData, tags: e.target.value.split(',')})}
         />{" "}
         <div className={classes.fileInput}>
           <FileBase64
