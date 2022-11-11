@@ -2,19 +2,16 @@ import { createUseStyles } from "react-jss";
 
 export const useStyles = createUseStyles({
   appBar: {
-    borderRadius: 15,
-    margin: "30px 0",
+    margin: "0 0 30px 0",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    padding: '10px 50px',
+    padding: '5px 50px',
+    background: '#4A76A8',
   },
   memoriesLogo: {
     marginLeft: "15px",
-  },
-  memoriesTitle: {
-    color: "rgba(0,183,255,1)",
   },
   heading: {
     color: 'rgba(0,183,255,1)',

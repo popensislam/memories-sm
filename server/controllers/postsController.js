@@ -2,12 +2,20 @@ import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
 export const getPosts = async (req, res) => {
+  const { sortBy } = req.query
+
   try {
     const postMessages = await PostMessage.find();
 
-    console.log(postMessages);
-
-    res.status(200).json(postMessages);
+    switch (sortBy) {
+      case 'date': {
+        const sortedPosts = postMessages.sort((a,b) => {
+          return  b.createdAt - a.createdAt
+        })
+        res.status(200).json(sortedPosts)
+      }
+      default: res.status(200).json(postMessages);
+    }
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

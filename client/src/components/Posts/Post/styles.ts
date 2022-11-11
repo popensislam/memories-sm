@@ -17,9 +17,9 @@ const useStyles = createUseStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    borderRadius: '15px',
     height: '100%',
     position: 'relative',
+    margin: '10px 0 10px 0',
   },
   overlay: {
     position: 'absolute',

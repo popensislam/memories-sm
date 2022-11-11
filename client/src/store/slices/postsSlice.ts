@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Posts } from '../services/interfaces'
+import { Posts } from '../interfaces'
 
 interface PostsSlice {
   posts: [],

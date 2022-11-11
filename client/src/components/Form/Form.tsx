@@ -1,19 +1,9 @@
-import {
-  Paper,
-  TextField,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Paper, TextField, Typography, Button, Snackbar, Alert } from "@mui/material";
 import { ChangeEvent, useState, useEffect } from "react";
 import FileBase64 from "react-file-base64";
 import { toast, ToastContainer } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import {
-  useAddPostMutation,
-  useUpdatePostMutation,
-} from "../../store/services/memoriesApi";
+import { useAddPostMutation, useUpdatePostMutation } from "../../store/postServices/memoriesApi";
 import { clearCurrentState, setActAddPost } from "../../store/slices/postsSlice";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -39,9 +29,7 @@ const Form = () => {
     }
   }, [currentPost]);
 
-  const handleOnChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPostData({ ...postData, [e.target.name]: e.target.value });
   };
 
@@ -63,7 +51,7 @@ const Form = () => {
         await updatePost(postData);
       } else {
         await postAddPost(postData);
-        dispatch(setActAddPost())
+        dispatch(setActAddPost());
       }
       toast.success("🦄 It is done!");
       clear();
@@ -72,17 +60,9 @@ const Form = () => {
       console.error("rejected", error);
     }
   };
-
-  console.log(postData.tags)
-
   return (
     <Paper className={classes.paper}>
-      <form
-        autoComplete="off"
-        noValidate
-        className={classes.form}
-        onSubmit={handleSubmit}
-      >
+      <form autoComplete="off" noValidate className={classes.form} onSubmit={handleSubmit}>
         <Typography variant="h6">
           {currentId !== null ? "Editing a memory" : "Creating a Memory"}
         </Typography>
@@ -116,7 +96,7 @@ const Form = () => {
           label="Tags"
           fullWidth
           value={postData.tags}
-          onChange={(e) => setPostData({...postData, tags: e.target.value.split(',')})}
+          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(",") })}
         />{" "}
         <div className={classes.fileInput}>
           <FileBase64

@@ -20,11 +20,11 @@ import { PostProps } from "../interfaces";
 // RTK
 import { useAppDispatch } from "../../../store/hooks";
 import { setCurrentId } from "../../../store/slices/postsSlice";
-import { fetchDeletePost, fetchLikePost } from "../../../store/services";
+import { fetchDeletePost, fetchLikePost } from "../../../store/postServices";
 import {
   useDeletePostMutation,
   useLikePostMutation,
-} from "../../../store/services/memoriesApi";
+} from "../../../store/postServices/memoriesApi";
 
 // STYLES
 import { useStyles } from "./styles";

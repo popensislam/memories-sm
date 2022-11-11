@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  Paper,
-  Grid,
-  Typography,
-  Container,
-  TextField,
-} from "@mui/material";
+import { Avatar, Button, Paper, Grid, Typography, Container, TextField } from "@mui/material";
+import FileBase64 from "react-file-base64";
+import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useStyles } from "./styles";
-import Input from "../../components/Input/Input";
+import Input from "../../components/UI/Input";
 import Icon from "./Icon";
+import { useRegUserMutation, useSignInUserMutation } from "../../store/authServices/authApi";
+import { useAppDispatch } from "../../store/hooks";
+import { setCurrentUser } from "../../store/slices/userSlice";
+import { toast } from "react-toastify";
+import { UserSign } from "../../store/interfaces";
 
 type AuthDataTypes = {
   firstName: string;
@@ -25,6 +24,11 @@ type AuthDataTypes = {
 
 const AuthContainer = () => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [useSignIn] = useSignInUserMutation();
+  const [useRegUser] = useRegUserMutation();
+
   const [authData, setAuthData] = useState<AuthDataTypes>({
     firstName: "",
     lastName: "",
@@ -36,13 +40,33 @@ const AuthContainer = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
-    if(isSignup) {
 
-    } else {
-      
+    try {
+      if (isSignup) {
+        if (authData.password !== authData.confirmPassword) {
+          toast.warn("Passwords do not match!");
+          return;
+        }
+        const { data }: any = await useRegUser(authData);
+        dispatch(setCurrentUser(data.result));
+        localStorage.setItem("access", data.token);
+        localStorage.setItem("refreshAccess", data.refreshToken);
+        navigate("/");
+      } else {
+        const { data }: any = await useSignIn({
+          email: authData.email,
+          password: authData.password,
+        });
+        dispatch(setCurrentUser(data.result));
+        localStorage.setItem("access", data.token);
+        console.log(data);
+        localStorage.setItem("refreshAccess", data.refreshToken);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -54,7 +78,7 @@ const AuthContainer = () => {
   }
 
   const googleSuccess = () => {
-    console.log('Google AUTH (not working now)');
+    console.log("Google AUTH (not working now)");
   };
 
   const googleFailure = () => {
@@ -107,14 +131,25 @@ const AuthContainer = () => {
               handleShowPassword={() => setShowPassword((prev) => !prev)}
             />
             {isSignup && (
-              <Input
-                name="confirmPassword"
-                label="Confirm password"
-                value={authData.password}
-                type={showPassword ? "text" : "password"}
-                handleChange={handleChange}
-                handleShowPassword={() => setShowPassword((prev) => !prev)}
-              />
+              <>
+                <Input
+                  name="confirmPassword"
+                  label="Confirm password"
+                  value={authData.confirmPassword}
+                  type={showPassword ? "text" : "password"}
+                  handleChange={handleChange}
+                  handleShowPassword={() => setShowPassword((prev) => !prev)}
+                />
+                <Grid item xs={12} sm={12}>
+                  <FileBase64
+                    type="file"
+                    multiple={false}
+                    onDone={({ base64 }: string | any) => {
+                      setAuthData({ ...authData, image: base64 });
+                    }}
+                  />
+                </Grid>
+              </>
             )}
           </Grid>
           <Button
@@ -150,10 +185,7 @@ const AuthContainer = () => {
               <Grid item>
                 <Typography>
                   Already have an account?{" "}
-                  <span
-                    onClick={() => setIsSignup(!isSignup)}
-                    className={classes.switch}
-                  >
+                  <span onClick={() => setIsSignup(!isSignup)} className={classes.switch}>
                     Sign in
                   </span>
                 </Typography>
@@ -162,10 +194,7 @@ const AuthContainer = () => {
               <Grid item>
                 <Typography>
                   Do not have an account?{" "}
-                  <span
-                    onClick={() => setIsSignup(!isSignup)}
-                    className={classes.switch}
-                  >
+                  <span onClick={() => setIsSignup(!isSignup)} className={classes.switch}>
                     Sign up
                   </span>
                 </Typography>

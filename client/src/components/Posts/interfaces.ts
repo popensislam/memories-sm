@@ -1,4 +1,4 @@
-import { Posts } from "../../store/services/interfaces";
+import { Posts } from "../../store/interfaces";
 
 export interface PostProps {
   post: Posts

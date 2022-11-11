@@ -2,7 +2,8 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #00b7ff;
-  background-image: url('./assets/dragon-scales.svg');
+  background-color: #EDEEF0;
+  /* background-image: url('./assets/dragon-scales.svg'); */
   background-size: cover;
+  font-family: 'Roboto';
 }

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useGetAllPostsQuery } from "../../store/services/memoriesApi";
+import { useGetAllPostsQuery } from "../../store/postServices/memoriesApi";
 import PostItem from "./Post/PostItem";
 import { useStyles } from "./styles";
 import { Grid, CircularProgress } from "@mui/material";
-import { Posts } from "../../store/services/interfaces";
+import { Posts } from "../../store/interfaces";
 import { useAppSelector } from "../../store/hooks";
 import { useTheme } from '@mui/material/styles';
 
