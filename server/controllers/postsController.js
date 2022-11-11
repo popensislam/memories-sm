@@ -1,20 +1,35 @@
 import mongoose from "mongoose";
-import PostMessage from "../models/postMessage.js";
+import PostMessage from "../models/postModel.js";
+
+export const getUserPosts = async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    const posts = await PostMessage.find({ creatorUsername: username });
+    const sortedPosts = posts.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+    res.status(200).json(sortedPosts);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
 export const getPosts = async (req, res) => {
-  const { sortBy } = req.query
+  const { sortBy } = req.query;
 
   try {
     const postMessages = await PostMessage.find();
 
     switch (sortBy) {
-      case 'date': {
-        const sortedPosts = postMessages.sort((a,b) => {
-          return  b.createdAt - a.createdAt
-        })
-        res.status(200).json(sortedPosts)
+      case "date": {
+        const sortedPosts = postMessages.sort((a, b) => {
+          return b.createdAt - a.createdAt;
+        });
+        res.status(200).json(sortedPosts);
       }
-      default: res.status(200).json(postMessages);
+      default:
+        res.status(200).json(postMessages);
     }
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -38,8 +53,7 @@ export const updatePost = async (req, res) => {
   const { id: _id } = req.params;
   const post = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No post with that id");
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No post with that id");
 
   const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
     new: true,
@@ -52,8 +66,7 @@ export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
 
   console.log(_id);
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("No post with that id");
+  if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No post with that id");
 
   await PostMessage.findByIdAndRemove(_id);
 
@@ -65,8 +78,7 @@ export const likePost = async (req, res) => {
 
   if (!req.userId) return res.json({ message: "Unauthenticated" });
 
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send("No post with that id");
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No post with that id");
 
   const post = await PostMessage.findById(id);
 

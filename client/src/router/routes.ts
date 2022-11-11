@@ -1,19 +1,30 @@
-import AuthPage from "../pages/auth/AuthPage";
-import MainPage from "../pages/main/MainPage";
-import { AUTH_PAGE, MAIN_PAGE } from "./consts";
+import AuthPage from "../pages/AuthPage";
+import MainPage from "../pages/MainPage";
+import RegPage from "../pages/RegPage";
+import { AUTH_PAGE, MAIN_PAGE, REG_PAGE } from "./consts";
 
-interface IPublicRoutes {
-  path: string,
-  element: Function,
+interface IRoutes {
+  path: string;
+  element: Function;
 }
 
-export const publicRoutes: IPublicRoutes[] = [
-  { 
-    path: MAIN_PAGE,
-    element: MainPage
-  },
+export const publicRoutes: IRoutes[] = [
   {
     path: AUTH_PAGE,
-    element: AuthPage
-  }
-]
+    element: AuthPage,
+  },
+];
+
+export const publicRoutesWithoutContainer: IRoutes[] = [
+  {
+    path: REG_PAGE,
+    element: RegPage,
+  },
+];
+
+export const privateRoutes: IRoutes[] = [
+  {
+    path: MAIN_PAGE,
+    element: MainPage,
+  },
+];

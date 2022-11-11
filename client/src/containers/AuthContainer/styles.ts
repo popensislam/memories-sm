@@ -2,6 +2,11 @@ import { createUseStyles } from "react-jss";
 
 
 export const useStyles = createUseStyles({
+  authContainer: {
+    height: 'calc(100vh - 50px)',
+    display: 'flex',
+    alignItems: 'center',
+  },
   paper: {
     marginTop: '16px',
     display: 'flex',

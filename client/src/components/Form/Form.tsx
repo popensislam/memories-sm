@@ -1,134 +1,107 @@
-import { Paper, TextField, Typography, Button, Snackbar, Alert } from "@mui/material";
-import { ChangeEvent, useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import { ChangeEvent, useState, FC, ChangeEventHandler } from "react";
 import FileBase64 from "react-file-base64";
-import { toast, ToastContainer } from "react-toastify";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useAddPostMutation, useUpdatePostMutation } from "../../store/postServices/memoriesApi";
-import { clearCurrentState, setActAddPost } from "../../store/slices/postsSlice";
 
 import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
+import Input from "../UI/Input";
 
-const Form = () => {
+interface IForm {
+  handleSubmit: ChangeEventHandler<HTMLFormElement> | Function;
+}
+
+const Form: FC<IForm> = ({ handleSubmit }) => {
   const classes = useStyles();
-  const [postAddPost] = useAddPostMutation();
-  const [updatePost] = useUpdatePostMutation();
-  const [postData, setPostData] = useState<any>({
-    creator: "",
-    title: "",
-    message: "",
-    tags: "",
+  const [authData, setAuthData] = useState<any>({
+    first_name: "",
+    last_name: "",
+    email: "",
+    username: "",
     selectedFile: "",
   });
-  const dispatch = useAppDispatch();
-  const { currentId, currentPost } = useAppSelector((state) => state.posts);
-
-  useEffect(() => {
-    if (currentPost !== null) {
-      setPostData(currentPost);
-    }
-  }, [currentPost]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPostData({ ...postData, [e.target.name]: e.target.value });
+    setAuthData({ ...authData, [e.target.name]: e.target.value });
   };
 
   const clear = () => {
-    dispatch(clearCurrentState());
-    setPostData({
-      creator: "",
-      title: "",
-      message: "",
-      tags: "",
+    setAuthData({
+      first_name: "",
+      last_name: "",
+      email: "",
+      username: "",
       selectedFile: "",
     });
   };
 
-  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      if (currentId) {
-        await updatePost(postData);
-      } else {
-        await postAddPost(postData);
-        dispatch(setActAddPost());
-      }
-      toast.success("🦄 It is done!");
-      clear();
-    } catch (error) {
-      toast.error("Something went wrong :(");
-      console.error("rejected", error);
-    }
-  };
   return (
-    <Paper className={classes.paper}>
-      <form autoComplete="off" noValidate className={classes.form} onSubmit={handleSubmit}>
-        <Typography variant="h6">
-          {currentId !== null ? "Editing a memory" : "Creating a Memory"}
-        </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) => handleOnChange(e)}
+    <form
+      className={classes.form}  
+      onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        handleSubmit(authData)}}
+    >
+      <Input
+        name="email"
+        label="Email address"
+        type="email"
+        half
+        value={authData.email}
+        handleChange={handleOnChange}
+        autoFocus
+      />
+      <Input
+        name="username"
+        label="Username"
+        type="text"
+        half
+        value={authData.username}
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="first_name"
+        label="First name"
+        type="text"
+        value={authData.first_name}
+        half
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="last_name"
+        label="Last name"
+        type="text"
+        half
+        value={authData.last_name}
+        handleChange={handleOnChange}
+      />
+      <div className={classes.fileInput}>
+        <FileBase64
+          type="file"
+          multiple={false}
+          onDone={({ base64 }: string | any) => {
+            setAuthData({ ...authData, selectedFile: base64 });
+          }}
         />
-        <TextField
-          name="title"
-          variant="outlined"
-          label="Title"
-          fullWidth
-          value={postData.title}
-          onChange={(e) => handleOnChange(e)}
-        />{" "}
-        <TextField
-          name="message"
-          variant="outlined"
-          label="Message"
-          fullWidth
-          value={postData.message}
-          onChange={(e) => handleOnChange(e)}
-        />{" "}
-        <TextField
-          name="tags"
-          variant="outlined"
-          label="Tags"
-          fullWidth
-          value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(",") })}
-        />{" "}
-        <div className={classes.fileInput}>
-          <FileBase64
-            type="file"
-            multiple={false}
-            onDone={({ base64 }: string | any) => {
-              setPostData({ ...postData, selectedFile: base64 });
-            }}
-          />
-        </div>
-        <Button
-          className={classes.buttonSubmit}
-          variant="contained"
-          color="primary"
-          size="large"
-          type="submit"
-          fullWidth
-        >
-          Submit
-        </Button>
-        <Button
-          className={classes.buttonSubmit}
-          variant="contained"
-          color="error"
-          size="large"
-          fullWidth
-          onClick={clear}
-        >
-          Clear
-        </Button>
-      </form>
-    </Paper>
+      </div>
+      <Button
+        className={classes.buttonSubmit}
+        variant="contained"
+        color="primary"
+        size="large"
+        type="submit"
+      >
+        Submit
+      </Button>
+      <Button
+        className={classes.buttonSubmit}
+        variant="contained"
+        color="error"
+        size="large"
+        onClick={clear}
+      >
+        Clear
+      </Button>
+    </form>
   );
 };
 

@@ -1,9 +1,6 @@
 import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
-  paper: {
-    padding: '4px',
-  },
   form: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -12,10 +9,12 @@ const useStyles = createUseStyles({
   },
   fileInput: {
     width: '97%',
-    margin: '10px 0',
+    display: 'flex',
+    justifyContent: 'center',
   },
   buttonSubmit: {
-    marginBottom: 10,
+    margin: '10px',
+    background: '#4A76A8'
   },
 });
 

@@ -1,4 +1,4 @@
-import MainContainer from "../../containers/MainContainer/MainContainer";
+import MainContainer from "../containers/MainContainer/MainContainer";
 
 const MainPage = () => {
   return <MainContainer />;
