@@ -1,13 +1,10 @@
 import { TextField, Grid, InputAdornment, IconButton } from "@mui/material";
 import { ChangeEventHandler, FC } from "react";
-import {
-  VisibilityOutlined,
-  VisibilityOffOutlined,
-} from "@mui/icons-material";
+import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
 
 interface InputProps {
   half?: any;
-  value: string,
+  value: string;
   name: string;
   label: string;
   autoFocus?: boolean;
@@ -39,16 +36,12 @@ const Input: FC<InputProps> = ({
         autoFocus={autoFocus}
         type={type}
         InputProps={
-          name === "password" || name == 'confirmPassword'
+          name === "password" || name == "confirmPassword"
             ? {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword}>
-                      {type === "password" ? (
-                        <VisibilityOutlined />
-                      ) : (
-                        <VisibilityOffOutlined />
-                      )}
+                      {type === "password" ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
                     </IconButton>
                   </InputAdornment>
                 ),

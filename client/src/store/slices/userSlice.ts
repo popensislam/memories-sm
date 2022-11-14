@@ -3,7 +3,7 @@ import { IUser, ResultUser } from "../interfaces";
 
 interface PostsSlice {
   users: [];
-  currentUser: ResultUser | null;
+  currentUser: IUser | null;
 }
 
 const initialState: PostsSlice = {

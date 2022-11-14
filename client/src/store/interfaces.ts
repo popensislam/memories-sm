@@ -19,11 +19,25 @@ export interface Post {
 }
 
 export interface IUser {
-  _id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  image: string;
+  id: string,
+  username: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  password: string,
+  mainImage: string,
+  friends: [{ id: String, username: String, image: String }],
+  subscribers: [{ id: String, username: String, image: String }],
+  images: [string],
+  videos: [string],
+  musics: [string],
+  articles: [],
+  status: string,
+  interestedIn: string,
+  phone: string,
+  country: string,
+  city: string,
+  website: string,
   __v?: number;
 }
 
@@ -36,8 +50,9 @@ export interface ResultUser {
   image: string;
   __v: number;
 }
+
 export interface UserSign {
-  result: ResultUser;
+  result: IUser;
   token: string;
 }
 export interface DataResultUser {

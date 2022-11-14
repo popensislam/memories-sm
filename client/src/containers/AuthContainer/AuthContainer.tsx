@@ -7,6 +7,7 @@ import Input from "../../components/UI/Input";
 import Icon from "./Icon";
 import { AuthDataTypes } from "../../pages/AuthPage";
 import { ChangeEventHandler, FC } from "react";
+import { Link } from "react-router-dom";
 
 interface AuthContainerProps {
   isSignup: boolean;
@@ -59,27 +60,6 @@ const AuthContainer: FC<AuthContainerProps> = ({
               handleChange={handleChange}
               handleShowPassword={() => setShowPassword((prev: boolean) => !prev)}
             />
-            {/* {isSignup && (
-              <>
-                <Input
-                  name="confirmPassword"
-                  label="Confirm password"
-                  value={authData.confirmPassword}
-                  type={showPassword ? "text" : "password"}
-                  handleChange={handleChange}
-                  handleShowPassword={() => setShowPassword((prev: boolean) => !prev)}
-                />
-                <Grid item xs={12} sm={12}>
-                  <FileBase64
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }: string | any) => {
-                      setAuthData({ ...authData, image: base64 });
-                    }}
-                  />
-                </Grid>
-              </>
-            )} */}
           </Grid>
           <Button
             type="submit"
@@ -113,9 +93,9 @@ const AuthContainer: FC<AuthContainerProps> = ({
             <Grid item>
               <Typography>
                 Do not have an account?{" "}
-                <span onClick={() => setIsSignup(!isSignup)} className={classes.switch}>
+                <Link to='/reg' className={classes.switch}>
                   Sign up
-                </span>
+                </Link>
               </Typography>
             </Grid>
           </Grid>

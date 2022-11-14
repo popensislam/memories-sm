@@ -31,7 +31,7 @@ export const authApi = createApi({
         url: "/user",
         method: Method.GET,
         headers: {
-          Authorization: "Bearer " + token,
+          authorization: "Bearer " + token,
         },
       }),
     }),

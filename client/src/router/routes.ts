@@ -1,6 +1,4 @@
-import AuthPage from "../pages/AuthPage";
-import MainPage from "../pages/MainPage";
-import RegPage from "../pages/RegPage";
+import React from "react";
 import { AUTH_PAGE, MAIN_PAGE, REG_PAGE } from "./consts";
 
 interface IRoutes {
@@ -11,20 +9,20 @@ interface IRoutes {
 export const publicRoutes: IRoutes[] = [
   {
     path: AUTH_PAGE,
-    element: AuthPage,
+    element: React.lazy(() => import("../pages/AuthPage")),
   },
 ];
 
 export const publicRoutesWithoutContainer: IRoutes[] = [
   {
     path: REG_PAGE,
-    element: RegPage,
+    element: React.lazy(() => import("../pages/RegPage")),
   },
 ];
 
 export const privateRoutes: IRoutes[] = [
   {
     path: MAIN_PAGE,
-    element: MainPage,
+    element: React.lazy(() => import("../pages/MainPage")),
   },
 ];

@@ -3,10 +3,10 @@ import { createUseStyles } from "react-jss";
 export const useStyles = createUseStyles({
   regWrapper: {
     background: "#4A76A8",
-    height: "100vh",
     width: "100%",
+    height: "100vh",
     overflow: "hidden",
-    position: "relative",
+    position: 'relative',
   },
   animationWrapper: {
     position: "absolute",
@@ -21,14 +21,17 @@ export const useStyles = createUseStyles({
   },
   animationWrapper2: {
     position: "absolute",
-    top: "2000px",
-    left: "2000px",
+    top: "3300px",
+    left: "3300px",
     width: "100%",
     height: "100%",
     display: "flex",
     justifyContent: "space-around",
     flexWrap: "wrap",
     transition: "all 0.6s ease",
+  },
+  '@media (max-width: 520px)': {
+    flexDirection: 'column',
   },
   block: {
     width: "400px",

@@ -1,6 +1,8 @@
 import { Paper, Grid, Typography, Avatar } from "@mui/material";
+import { FC } from "react";
+import { IUser } from "../../store/interfaces";
 
-const FriendsPaper = () => {
+const FriendsPaper: FC<{ currentUser: IUser | null }> = ({ currentUser }) => {
   return (
     <Paper elevation={3} sx={{ width: "100%" }}>
       <Grid
@@ -18,7 +20,7 @@ const FriendsPaper = () => {
             lineHeight: "28px",
             color: "#000000",
           }}
-        >{`Подписано ${12} друзей`}</Typography>
+        >{`Подписано ${currentUser?.friends?.length} друзей`}</Typography>
         <Grid
           sx={{
             display: "flex",
@@ -26,24 +28,19 @@ const FriendsPaper = () => {
             height: "40px",
           }}
         >
-          <Avatar
-            sx={{
-              position: "absolute",
-              right: "10px",
-              height: "36px",
-              width: "34px",
-              border: "4px solid #fff",
-            }}
-          />
-          <Avatar
-            sx={{
-              position: "absolute",
-              right: "40px",
-              height: "36px",
-              width: "34px",
-              border: "4px solid #fff",
-            }}
-          />
+          {currentUser?.friends?.slice(0, 2).map((friend: any) => (
+            <Avatar
+              key={friend?.id}
+              src={friend?.image}
+              sx={{
+                position: "absolute",
+                right: "10px",
+                height: "36px",
+                width: "34px",
+                border: "4px solid #fff",
+              }}
+            />
+          ))}
         </Grid>
       </Grid>
     </Paper>

@@ -1,20 +1,30 @@
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { ChangeEvent, useState, FC, ChangeEventHandler } from "react";
 
 import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
 import Input from "../UI/Input";
 
-const FormInfo = () => {
+interface AuthDataInfo {
+  status: string;
+  interestedIn: string;
+  phone: string;
+  country: string;
+  city: string;
+  website: string;
+}
 
+const FormInfo: FC<{ handleSubmitInfo: ChangeEventHandler<HTMLFormElement> | Function }> = ({
+  handleSubmitInfo,
+}) => {
   const classes = useStyles();
-  const [authData, setAuthData] = useState<any>({
+  const [authData, setAuthData] = useState<AuthDataInfo | any>({
     status: "",
     interestedIn: "",
     phone: "",
     country: "",
     city: "",
-    website: '',
+    website: "",
   });
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -23,74 +33,94 @@ const FormInfo = () => {
 
   const clear = () => {
     setAuthData({
-      first_name: "",
-      last_name: "",
-      email: "",
-      username: "",
-      selectedFile: "",
+      status: "",
+      interestedIn: "",
+      phone: "",
+      country: "",
+      city: "",
+      website: "",
     });
   };
 
-  return ( 
+  return (
     <form
-    className={classes.form}  
-    onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      handleSubmit(authData)}}
-  >
-    <Input
-      name="email"
-      label="Email address"
-      type="email"
-      half
-      value={authData.email}
-      handleChange={handleOnChange}
-      autoFocus
-    />
-    <Input
-      name="username"
-      label="Username"
-      type="text"
-      half
-      value={authData.username}
-      handleChange={handleOnChange}
-    />
-    <Input
-      name="first_name"
-      label="First name"
-      type="text"
-      value={authData.first_name}
-      half
-      handleChange={handleOnChange}
-    />
-    <Input
-      name="last_name"
-      label="Last name"
-      type="text"
-      half
-      value={authData.last_name}
-      handleChange={handleOnChange}
-    />
-    <Button
-      className={classes.buttonSubmit}
-      variant="contained"
-      color="primary"
-      size="large"
-      type="submit"
+      className={classes.form}
+      onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        handleSubmitInfo(authData);
+      }}
     >
-      Submit
-    </Button>
-    <Button
-      className={classes.buttonSubmit}
-      variant="contained"
-      color="error"
-      size="large"
-      onClick={clear}
-    >
-      Clear
-    </Button>
-  </form>
-   );
-}
- 
+      <Input
+        name="status"
+        label="Status"
+        type="text"
+        half
+        value={authData.status}
+        handleChange={handleOnChange}
+        autoFocus
+      />
+      <Input
+        name="interestedIn"
+        label="What you are interested in"
+        type="text"
+        half
+        value={authData.interestedIn}
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="phone"
+        label="Phone"
+        type="text"
+        value={authData.phone}
+        half
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="website"
+        label="Link of your website"
+        type="text"
+        half
+        value={authData.website}
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="country"
+        label="Country"
+        type="text"
+        half
+        value={authData.country}
+        handleChange={handleOnChange}
+      />
+      <Input
+        name="city"
+        label="City"
+        type="text"
+        half
+        value={authData.city}
+        handleChange={handleOnChange}
+      />
+      <Grid sx={{width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
+        <Button
+          className={classes.buttonSubmit}
+          variant="contained"
+          color="primary"
+          size="large"
+          type="submit"
+        >
+          Submit
+        </Button>
+        <Button
+          className={classes.buttonSubmit}
+          variant="contained"
+          color="error"
+          size="large"
+          onClick={clear}
+        >
+          Clear
+        </Button>
+      </Grid>
+    </form>
+  );
+};
+
 export default FormInfo;

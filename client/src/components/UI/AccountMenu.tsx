@@ -13,10 +13,10 @@ import {
 
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { ResultUser } from "../../store/interfaces";
+import { IUser } from "../../store/interfaces";
 
 interface AccountProps {
-  currentUser: ResultUser | null;
+  currentUser: IUser | null;
   handleLogOut: Function;
 }
 
@@ -46,9 +46,9 @@ const AccountMenu: FC<AccountProps> = ({ currentUser, handleLogOut }) => {
             aria-expanded={open ? "true" : undefined}
           >
             <Typography sx={{ minWidth: 100, fontSize: "18px", fontWeight: "600", color: "white" }}>
-              {currentUser?.first_name}
+              {currentUser?.username}
             </Typography>
-            <Avatar sx={{ width: 52, height: 52 }} src={currentUser?.image} alt="user image">
+            <Avatar sx={{ width: 52, height: 52 }} src={currentUser?.mainImage} alt="user image">
               M
             </Avatar>
           </IconButton>
@@ -90,7 +90,7 @@ const AccountMenu: FC<AccountProps> = ({ currentUser, handleLogOut }) => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem>
-          <Avatar src={currentUser?.image} alt="user image" /> Profile
+          <Avatar src={currentUser?.mainImage} alt="user image" /> Profile
         </MenuItem>
         <Divider />
         <MenuItem>

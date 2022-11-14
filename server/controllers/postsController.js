@@ -26,13 +26,28 @@ export const getPosts = async (req, res) => {
         const sortedPosts = postMessages.sort((a, b) => {
           return b.createdAt - a.createdAt;
         });
-        res.status(200).json(sortedPosts);
+        return res.status(200).json(sortedPosts);
       }
       default:
-        res.status(200).json(postMessages);
+        return res.status(200).json(postMessages);
     }
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+
+export const getOwnerPosts = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+
+  try {
+    const decodedUser = jwt.verify(token, process.env.TOKEN_KEY);
+    const postMessages = await PostMessage.find({ creatorId: decodedUser._id });
+    const sortedPosts = postMessages.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+    res.status(200).json(sortedPosts);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong!" });
   }
 };
 
@@ -94,4 +109,24 @@ export const likePost = async (req, res) => {
     new: true,
   });
   res.json(updatedPost);
+};
+
+export const commentPost = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const { id } = req.body;
+
+  try {
+    const decodedUser = jwt.verify(token, process.env.TOKEN_KEY);
+    const post = await PostMessage.findById(id);
+    post.comments.push({
+      id: Date.now(),
+      writer: decodedUser.username,
+      writerImg: decodedUser.mainImage,
+    });
+    const updatedPost = PostMessage.findOneAndUpdate(id, post, { new: true });
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrond.", error });
+  }
 };

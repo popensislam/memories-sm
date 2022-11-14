@@ -5,6 +5,7 @@ import FileBase64 from "react-file-base64";
 import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
 import Input from "../UI/Input";
+import { toast } from "react-toastify";
 
 interface IForm {
   handleSubmit: ChangeEventHandler<HTMLFormElement> | Function;
@@ -17,8 +18,11 @@ const Form: FC<IForm> = ({ handleSubmit }) => {
     last_name: "",
     email: "",
     username: "",
+    password: "",
+    confirmPassword: "",
     selectedFile: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAuthData({ ...authData, [e.target.name]: e.target.value });
@@ -31,15 +35,22 @@ const Form: FC<IForm> = ({ handleSubmit }) => {
       email: "",
       username: "",
       selectedFile: "",
+      password: "",
+      confirmPassword: "",
     });
   };
 
   return (
     <form
-      className={classes.form}  
+      className={classes.form}
       onSubmit={(e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        handleSubmit(authData)}}
+        e.preventDefault();
+        if (authData.password === authData.confirmPassword) {
+          handleSubmit(authData);
+        } else {
+          toast.error("Passwords do not match!")
+        }
+      }}
     >
       <Input
         name="email"
@@ -73,6 +84,24 @@ const Form: FC<IForm> = ({ handleSubmit }) => {
         half
         value={authData.last_name}
         handleChange={handleOnChange}
+      />
+      <Input
+        name="password"
+        label="Password"
+        type={showPassword ? "text" : "password"}
+        half
+        value={authData.password}
+        handleChange={handleOnChange}
+        handleShowPassword={() => setShowPassword(!showPassword)}
+      />
+      <Input
+        name="confirmPassword"
+        label="Confirm password"
+        type={showPassword ? "text" : "password"}
+        half
+        value={authData.confirmPassword}
+        handleChange={handleOnChange}
+        handleShowPassword={() => setShowPassword(!showPassword)}
       />
       <div className={classes.fileInput}>
         <FileBase64

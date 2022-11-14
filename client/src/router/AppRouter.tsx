@@ -44,9 +44,10 @@ const IsNotAuth: FC = () => (
 
 const AppRouter = () => {
   const isTable = useMediaQuery("max-width: 990px");
-  const { currentUser } = useAppSelector((state) => state.users);
+  const token = localStorage.getItem('access')
+  // const { currentUser } = useAppSelector((state) => state.users);
 
-  return currentUser ? <IsAuth isTable={isTable} /> : <IsNotAuth />;
+  return token ? <IsAuth isTable={isTable} /> : <IsNotAuth />;
 };
 
 export default AppRouter;
