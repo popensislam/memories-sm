@@ -2,10 +2,11 @@ import mongoose from "mongoose";
 import PostMessage from "../models/postModel.js";
 
 export const getUserPosts = async (req, res) => {
-  const { username } = req.query;
-
+  const { username } = req.params;
+  console.log(username);
   try {
     const posts = await PostMessage.find({ creatorUsername: username });
+
     const sortedPosts = posts.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
@@ -36,28 +37,11 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const getOwnerPosts = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-
-  try {
-    const decodedUser = jwt.verify(token, process.env.TOKEN_KEY);
-    const postMessages = await PostMessage.find({ creatorId: decodedUser._id });
-    const sortedPosts = postMessages.sort((a, b) => {
-      return b.createdAt - a.createdAt;
-    });
-    res.status(200).json(sortedPosts);
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong!" });
-  }
-};
-
 export const createPost = async (req, res) => {
   const post = req.body;
-
   const newPost = new PostMessage(post);
   try {
     await newPost.save();
-
     res.status(201).json(newPost);
   } catch (error) {
     res.status(409).json({ messsage: error.message });
@@ -124,7 +108,6 @@ export const commentPost = async (req, res) => {
       writerImg: decodedUser.mainImage,
     });
     const updatedPost = PostMessage.findOneAndUpdate(id, post, { new: true });
-
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: "Something went wrond.", error });

@@ -27,7 +27,7 @@ export const memoriesApi = createApi({
     getAllPosts: builder.query<Posts[] | undefined, string>({
       query: (sort) => `?sortBy=${sort}`,
     }),
-    addPost: builder.mutation<Posts, Post>({
+    addPost: builder.mutation<Post, Post>({
       query: (post) => ({
         url: "/",
         method: Method.POST,
@@ -53,11 +53,15 @@ export const memoriesApi = createApi({
         method: Method.PATCH,
       }),
     }),
+    getUserPosts: builder.query<any, string | null | undefined>({
+      query: (username) => `/${username}`
+    })
   }),
 });
 
 export const {
   useGetAllPostsQuery,
+  useGetUserPostsQuery,
   useAddPostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,

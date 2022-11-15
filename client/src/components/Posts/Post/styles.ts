@@ -20,6 +20,7 @@ const useStyles = createUseStyles({
     height: '100%',
     position: 'relative',
     margin: '10px 0 10px 0',
+    paddingBottom: '10px',
   },
   overlay: {
     position: 'absolute',

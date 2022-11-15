@@ -2,7 +2,9 @@ export interface Posts {
   _id: string;
   title: string;
   message: string;
-  creator: string;
+  creatorId: string;
+  creatorUsername: string;
+  creatorImg: string;
   tags: string[];
   selectedFile: string;
   likeCount: number;
@@ -11,33 +13,35 @@ export interface Posts {
 }
 
 export interface Post {
-  creator: string;
   title: string;
   message: string;
-  tags: string;
+  creatorId: string | undefined;
+  creatorUsername: string | undefined;
+  creatorImg: string | undefined;
   selectedFile: string;
 }
 
 export interface IUser {
-  id: string,
-  username: string,
-  first_name: string,
-  last_name: string,
-  email: string,
-  password: string,
-  mainImage: string,
-  friends: [{ id: String, username: String, image: String }],
-  subscribers: [{ id: String, username: String, image: String }],
-  images: [string],
-  videos: [string],
-  musics: [string],
-  articles: [],
-  status: string,
-  interestedIn: string,
-  phone: string,
-  country: string,
-  city: string,
-  website: string,
+  id: string;
+  _id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  mainImage: string;
+  friends: [{ id: String; username: String; image: String }];
+  subscribers: [{ id: String; username: String; image: String }];
+  images: [string];
+  videos: [string];
+  musics: [string];
+  articles: [];
+  status: string;
+  interestedIn: string;
+  phone: string;
+  country: string;
+  city: string;
+  website: string;
   __v?: number;
 }
 

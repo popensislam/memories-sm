@@ -46,4 +46,17 @@ export const useStyles = createUseStyles({
   postAccPaper: {
     width: '100%',
   },
+  uploadImg: {
+    width: '300px',
+    height: '150px !important',
+    objectFit: 'contain',
+    margin: '10px 20px',
+  },
+  textArea: {
+    margin: '10px 20px',
+    width: '400px',
+    height: '150px !important',
+    fontSize: '24px',
+    resize: 'none',
+  },
 });

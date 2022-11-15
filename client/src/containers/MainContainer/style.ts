@@ -5,7 +5,7 @@ export const useStyles = createUseStyles({
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    flexWrap: 'none !important',
   },
   flexWrapper: {
     width: "100%",
