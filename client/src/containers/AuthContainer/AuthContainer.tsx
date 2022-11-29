@@ -1,6 +1,5 @@
 import { Avatar, Button, Paper, Grid, Typography, Container, TextField } from "@mui/material";
 import FileBase64 from "react-file-base64";
-import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useStyles } from "./styles";
 import Input from "../../components/UI/Input";
@@ -70,30 +69,11 @@ const AuthContainer: FC<AuthContainerProps> = ({
           >
             Sign in
           </Button>
-          <GoogleLogin
-            clientId="1017101912215-lda0d1jpsciaue11luc667ane9hp27be.apps.googleusercontent.com"
-            render={(renderProps: any) => (
-              <Button
-                className={classes.googleButton}
-                color="primary"
-                fullWidth
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-                startIcon={<Icon />}
-                variant="contained"
-              >
-                Goggle sign in
-              </Button>
-            )}
-            onSuccess={googleSuccess}
-            onFailure={googleFailure}
-            cookiePolicy="single_host_origin"
-          />
           <Grid container justifyContent="center" sx={{ mt: "12px" }}>
             <Grid item>
               <Typography>
                 Do not have an account?{" "}
-                <Link to='/reg' className={classes.switch}>
+                <Link to="/reg" className={classes.switch}>
                   Sign up
                 </Link>
               </Typography>

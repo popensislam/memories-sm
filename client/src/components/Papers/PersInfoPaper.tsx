@@ -19,7 +19,7 @@ import { useStyles } from "./style";
 
 import { IUser } from "../../store/interfaces";
 
-const PersInfoPaper: FC<{currentUser: IUser | null}> = ({ currentUser }) => {
+const PersInfoPaper: FC<{ currentUser: IUser | null }> = ({ currentUser }) => {
   const classes = useStyles();
   return (
     <Paper className={classes.paperWrapper} elevation={3}>

@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { io } from "../index.js";
+import CommentsModel from "../models/commentModel.js";
 import PostMessage from "../models/postModel.js";
 
 export const getUserPosts = async (req, res) => {
@@ -95,21 +97,41 @@ export const likePost = async (req, res) => {
   res.json(updatedPost);
 };
 
-export const commentPost = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-  const { id } = req.body;
+// COMMENTS ---------------------------------------------------
+
+export const commentPut = async (req, res) => {
+  const { postId, username, userImg, message } = req.body;
 
   try {
-    const decodedUser = jwt.verify(token, process.env.TOKEN_KEY);
-    const post = await PostMessage.findById(id);
-    post.comments.push({
-      id: Date.now(),
-      writer: decodedUser.username,
-      writerImg: decodedUser.mainImage,
-    });
-    const updatedPost = PostMessage.findOneAndUpdate(id, post, { new: true });
-    res.status(200).json(updatedPost);
+    const post = await CommentsModel.find({ postId: postId });
+    const foundPost = post[0];
+
+    if (foundPost) {
+      foundPost.comments.push({ username, userImg, message });
+      const updatedPost = await CommentsModel.findOneAndUpdate({ _id: foundPost._id }, foundPost, {
+        new: true,
+      });
+      io.emit("getComments", updatedPost);
+      res.status(200).json({ updatedPost });
+    } else {
+      const post = { postId, comment: [{ username, userImg, message }] };
+      const newPost = new CommentsModel(post);
+      await newPost.save();
+      io.emit("getComments", { newPost });
+      res.status(200).json({ newPost });
+    }
   } catch (error) {
     res.status(500).json({ message: "Something went wrond.", error });
+  }
+};
+
+export const getComments = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const postCom = await CommentsModel.find({ postId: postId });
+    console.log(postCom)
+    res.status(200).json({ comments: postCom.comments});
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong.", error });
   }
 };

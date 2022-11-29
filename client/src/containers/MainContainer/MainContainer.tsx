@@ -2,7 +2,7 @@ import { Avatar, Grid, Paper, Typography, useTheme, Box } from "@mui/material";
 import { useAppSelector } from "../../store/hooks";
 import { useStyles } from "./style";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import CategoryPaper from "../../components/Papers/CategoryPaper";
 import PersInfoPaper from "../../components/Papers/PersInfoPaper";
 import FriendsPaper from "../../components/Papers/FriendsPaper";
@@ -14,6 +14,7 @@ import {
   useGetAllPostsQuery,
   useGetUserPostsQuery,
 } from "../../store/postServices/memoriesApi";
+
 
 const catToPick = ["Photo", "Videos", "Musics", "Articles"];
 const images = [1, 2, 3, 4];
@@ -49,7 +50,7 @@ const MainContainer = () => {
   };
 
   return (
-    <Box className={classes.mainWrapper} sx={{ pt: "16px", flexWrap: 'none' }}>
+    <Box className={classes.mainWrapper} sx={{ pt: "16px", flexWrap: "none" }}>
       <Grid className={classes.flexWrapper} container direction="row">
         <PersInfoPaper currentUser={currentUser} />
         <Paper elevation={3} className={classes.flexWrapperImg}>
@@ -83,7 +84,7 @@ const MainContainer = () => {
           )}
         </Grid>
       </Grid>
-    </Box> 
+    </Box>
   );
 };
 

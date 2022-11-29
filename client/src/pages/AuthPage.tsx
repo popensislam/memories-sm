@@ -38,31 +38,17 @@ const AuthPage = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    try {
-      if (isSignup) {
-        if (authData.password !== authData.confirmPassword) {
-          toast.warn("Passwords do not match!");
-          return;
-        }
-        const { data }: any = await useRegUser(authData);
-        dispatch(setCurrentUser(data.result));
-        localStorage.setItem("access", data.token);
-        localStorage.setItem("refreshAccess", data.refreshToken);
-        navigate("/");
-      } else {
-        const { data }: any = await useSignIn({
-          email: authData.email,
-          password: authData.password,
-        });
-        dispatch(setCurrentUser(data.result));
-        localStorage.setItem("access", data.token);
-        console.log(data);
-        localStorage.setItem("refreshAccess", data.refreshToken);
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
+    const { data, error }: any = await useSignIn({
+      email: authData.email,
+      password: authData.password,
+    });
+    if (error) {
+      toast.warn(`Status code ${error.status}. ${error.data.message}`);
+      return;
     }
+    dispatch(setCurrentUser(data.result));
+    await localStorage.setItem("access", data.token);
+    navigate("/")
   };
 
   function handleChange(e: any) {
@@ -81,18 +67,20 @@ const AuthPage = () => {
   };
 
   return (
-    <AuthContainer
-      handleSubmit={handleSubmit}
-      isSignup={isSignup}
-      setIsSignup={setIsSignup}
-      authData={authData}
-      handleChange={handleChange}
-      showPassword={showPassword}
-      setShowPassword={setShowPassword}
-      setAuthData={setAuthData}
-      googleSuccess={googleSuccess}
-      googleFailure={googleFailure}
-    />
+    <>
+      <AuthContainer
+        handleSubmit={handleSubmit}
+        isSignup={isSignup}
+        setIsSignup={setIsSignup}
+        authData={authData}
+        handleChange={handleChange}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
+        setAuthData={setAuthData}
+        googleSuccess={googleSuccess}
+        googleFailure={googleFailure}
+      />
+    </>
   );
 };
 

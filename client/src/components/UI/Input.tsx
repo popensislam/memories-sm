@@ -24,7 +24,7 @@ const Input: FC<InputProps> = ({
   handleShowPassword,
 }) => {
   return (
-    <Grid item xs={12} sm={half ? 5 : 10}>
+    <Grid item xs={12} sm={half ? 5 : 12}>
       <TextField
         name={name}
         value={value}

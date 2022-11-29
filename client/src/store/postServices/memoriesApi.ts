@@ -8,6 +8,7 @@ enum Method {
   GET = "GET",
   PATCH = "PATCH",
   DELETE = "DELETE",
+  PUT = "PUT",
 }
 
 export const memoriesApi = createApi({
@@ -54,8 +55,20 @@ export const memoriesApi = createApi({
       }),
     }),
     getUserPosts: builder.query<any, string | null | undefined>({
-      query: (username) => `/${username}`
-    })
+      query: (username) => `/${username}`,
+    }),
+
+    // COMMENTS -----------------------------------
+    getPostComments: builder.mutation<any, any>({
+      query: (post) => ({
+        url: "/comments",
+        body: post,
+        method: Method.PUT,
+      }),
+    }),
+    getPostCommentsFirstTime: builder.mutation<any, any>({
+      query: (postId) => `/comments/${postId}`,
+    }),
   }),
 });
 
@@ -66,4 +79,6 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
   useLikePostMutation,
+  useGetPostCommentsMutation,
+  useGetPostCommentsFirstTimeMutation,
 } = memoriesApi;

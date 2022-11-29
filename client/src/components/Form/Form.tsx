@@ -2,7 +2,6 @@ import { Button } from "@mui/material";
 import { ChangeEvent, useState, FC, ChangeEventHandler } from "react";
 import FileBase64 from "react-file-base64";
 
-import "react-toastify/dist/ReactToastify.css";
 import { useStyles } from "./styles";
 import Input from "../UI/Input";
 import { toast } from "react-toastify";

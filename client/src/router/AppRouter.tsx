@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import MainPage from "../pages/MainPage";
-import { privateRoutes, publicRoutes, publicRoutesWithoutContainer } from "./routes";
+import { privateRoutes, publicRoutes } from "./routes";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import NavBar from "../components/NavBar/NavBar";
 import SideBar from "../components/SideBar/SideBar";
 import { useAppSelector } from "../store/hooks";
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import AuthPage from "../pages/AuthPage";
 
 const IsAuth: FC<{ isTable: boolean }> = ({ isTable }) => (
   <>
@@ -18,7 +19,6 @@ const IsAuth: FC<{ isTable: boolean }> = ({ isTable }) => (
             {privateRoutes.map((route) => (
               <Route key={route.path} path={route.path} element={<route.element />} />
             ))}
-            <Route path="*" element={<MainPage />} />
           </Routes>
         </Grid>
       </Grid>
@@ -27,25 +27,21 @@ const IsAuth: FC<{ isTable: boolean }> = ({ isTable }) => (
 );
 const IsNotAuth: FC = () => (
   <>
-    <Container maxWidth="lg">
-      <Routes>
-        {publicRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={<route.element />} />
-        ))}
-      </Routes>
-    </Container>
     <Routes>
-      {publicRoutesWithoutContainer.map((route) => (
+      {publicRoutes.map((route) => (
         <Route key={route.path} path={route.path} element={<route.element />} />
       ))}
+      <Route path="*" element={<AuthPage />} />
     </Routes>
   </>
 );
 
 const AppRouter = () => {
   const isTable = useMediaQuery("max-width: 990px");
-  const token = localStorage.getItem('access')
-  // const { currentUser } = useAppSelector((state) => state.users);
+  const token = localStorage.getItem("access");
+  const { currentUser } = useAppSelector((state) => state.users);
+
+  useEffect(() => {}, [currentUser]);
 
   return token ? <IsAuth isTable={isTable} /> : <IsNotAuth />;
 };

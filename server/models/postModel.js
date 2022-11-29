@@ -8,7 +8,6 @@ const postSchema = mongoose.Schema({
   creatorImg: String,
   tags: [String],
   selectedFile: String,
-  comments: [{id: String, writer: String, writerImg: String, text: String }],
   likes: {
     type: [String],
     default: [],

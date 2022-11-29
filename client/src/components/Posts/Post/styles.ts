@@ -49,6 +49,12 @@ const useStyles = createUseStyles({
     padding: '0 16px 8px 16px',
     display: 'flex',
     justifyContent: 'space-between',
+    '& button': {
+      color: '#2A5885',
+    },
+    '& svg': {
+      fill: '#2A5885'
+    }
   },
 });
 

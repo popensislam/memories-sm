@@ -5,6 +5,8 @@ import { useAppSelector } from "./store/hooks";
 
 import AppRouter from "./router/AppRouter";
 
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const { themeMode } = useAppSelector((state) => state.posts);
   const theme = createTheme({
