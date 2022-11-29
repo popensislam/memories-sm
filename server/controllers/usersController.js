@@ -96,3 +96,23 @@ export const getUserParams = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+// USERS TO MAKE FRIENDS
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+
+    const editUsers = await users.map((item) => {
+      return {
+        first_name: item.first_name || "",
+        last_name: item.last_name || "",
+        username: item.username || "",
+        image: item.mainImage || "",
+      };
+    });
+    res.status(200).json({ editUsers });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
