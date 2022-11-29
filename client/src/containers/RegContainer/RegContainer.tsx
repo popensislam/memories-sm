@@ -51,7 +51,7 @@ const RegContainer = () => {
     if (data) {
       dispatch(setCurrentUser(data.result));
       localStorage.setItem("access", data.token);
-      navigate("/");
+      navigate(`/${data.result.username}`);
     }
   };
 

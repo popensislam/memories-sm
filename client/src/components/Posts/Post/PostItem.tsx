@@ -26,7 +26,7 @@ import { setCurrentId } from "../../../store/slices/postsSlice";
 import { fetchDeletePost, fetchLikePost } from "../../../store/postServices";
 import {
   useDeletePostMutation,
-  useGetPostCommentsFirstTimeMutation,
+  useGetPostCommentsFirstTimeQuery,
   useGetPostCommentsMutation,
   useLikePostMutation,
 } from "../../../store/postServices/memoriesApi";
@@ -43,9 +43,9 @@ const PostItem: FC<PostProps> = ({ post }) => {
   const [deletePost] = useDeletePostMutation();
   const [likePost] = useLikePostMutation();
   const [getComments] = useGetPostCommentsMutation();
-  const [getFirstComments] = useGetPostCommentsFirstTimeMutation();
+  const { data: comments } = useGetPostCommentsFirstTimeQuery(post._id);
 
-  const [likeCount, setLikeCount] = useState(post?.likeCount);
+  const [likeCount, setLikeCount] = useState(post?.likes?.length);
   const [openDialog, setOpenDialog] = useState(false);
   const [messages, setMessages] = useState(null);
 
@@ -63,8 +63,7 @@ const PostItem: FC<PostProps> = ({ post }) => {
   // DIALOG OF COMMENTS
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
-    const data: any = getFirstComments(post._id);
-    console.log(data);
+    console.log(comments);
   };
 
   const onSendComment = (message: string) => {
@@ -77,8 +76,19 @@ const PostItem: FC<PostProps> = ({ post }) => {
   };
 
   useEffect(() => {
+    if (comments) {
+      setMessages(comments.comments);
+    }
+  }, [comments]);
+  useEffect(() => {
     socket.on("getComments", (data: any) => {
       setMessages(data.comments);
+    });
+
+    socket.on("getLikes", (data: any) => {
+      if (data.postId === post._id) {
+        setLikeCount(data.likes.length);
+      }
     });
   }, []);
 
@@ -92,7 +102,6 @@ const PostItem: FC<PostProps> = ({ post }) => {
   };
   const handleLike = async () => {
     await fetchLikePost(post._id, likePost);
-    setLikeCount((prev) => prev + 1);
   };
   const handleDelete = async () => {
     await fetchDeletePost(post._id, deletePost);
@@ -116,7 +125,6 @@ const PostItem: FC<PostProps> = ({ post }) => {
         <Button sx={{ color: "white" }} size="small" onClick={handleOpen}>
           <MoreHorizIcon fontSize="medium" />
         </Button>
-
         <Menu
           anchorEl={anchorEl}
           id="account-menu"

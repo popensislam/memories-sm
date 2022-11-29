@@ -1,7 +1,7 @@
 
 // PRIVATE 
 
-export const MAIN_PAGE = '/'
+export const MAIN_PAGE = '/:username'
 
 // PUBLIC
 

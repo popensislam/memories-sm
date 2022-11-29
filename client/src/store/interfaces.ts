@@ -7,7 +7,7 @@ export interface Posts {
   creatorImg: string;
   tags: string[];
   selectedFile: string;
-  likeCount: number;
+  likes: [string];
   createdAt: string;
   __v: number;
 }

@@ -46,7 +46,7 @@ export const RegUser = async (req, res) => {
     if (existingUser || existingUserByName)
       return res.status(400).json({ message: "User already exists." });
 
-    console.log(password)
+    console.log(password);
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const result = await UserModel.create({
@@ -68,7 +68,7 @@ export const RegUser = async (req, res) => {
     res.status(200).json({ result, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -78,12 +78,21 @@ export const GetUserData = async (req, res) => {
     try {
       const decodedData = await jwt.verify(token, process.env.TOKEN_KEY);
       const user = await UserModel.findById(decodedData.id);
-      console.log(decodedData)
       res.status(200).json({ user });
     } catch (error) {
       res.status(500).json({ message: "Something went wrong." });
     }
   } else {
     res.status(400).json({ message: "Unauthorized" });
+  }
+};
+
+export const getUserParams = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await UserModel.find({ username });
+    res.status(200).json({ user: user[0] });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
   }
 };

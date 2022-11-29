@@ -35,8 +35,10 @@ export const authApi = createApi({
         },
       }),
     }),
+    getUserByParams: builder.query<any, any>({
+      query: (username) => `/${username}`,
+    }),
   }),
 });
 
-export const { useSignInUserMutation, useRegUserMutation, useGetUserQuery } =
-  authApi;
+export const { useSignInUserMutation, useRegUserMutation, useGetUserQuery, useGetUserByParamsQuery } = authApi;

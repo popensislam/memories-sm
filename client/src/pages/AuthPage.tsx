@@ -48,7 +48,7 @@ const AuthPage = () => {
     }
     dispatch(setCurrentUser(data.result));
     await localStorage.setItem("access", data.token);
-    navigate("/")
+    navigate(`/${data.result.username}`);
   };
 
   function handleChange(e: any) {

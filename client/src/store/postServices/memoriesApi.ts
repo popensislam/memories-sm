@@ -66,7 +66,7 @@ export const memoriesApi = createApi({
         method: Method.PUT,
       }),
     }),
-    getPostCommentsFirstTime: builder.mutation<any, any>({
+    getPostCommentsFirstTime: builder.query<any, any>({
       query: (postId) => `/comments/${postId}`,
     }),
   }),
@@ -80,5 +80,5 @@ export const {
   useDeletePostMutation,
   useLikePostMutation,
   useGetPostCommentsMutation,
-  useGetPostCommentsFirstTimeMutation,
+  useGetPostCommentsFirstTimeQuery,
 } = memoriesApi;

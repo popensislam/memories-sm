@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,8 +12,9 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Avatar, TextField } from "@mui/material";
+import { Avatar, Box, TextField } from "@mui/material";
 import { useStyles } from "./styles";
+import { Link, useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -29,7 +30,7 @@ interface FullDialogProps {
   handleCloseDialog: any;
   onSendComment: Function;
   messages: [{}] | null;
-  postId: string,
+  postId: string;
 }
 
 const FullDialog: React.FC<FullDialogProps> = ({
@@ -40,8 +41,18 @@ const FullDialog: React.FC<FullDialogProps> = ({
   postId,
 }) => {
   const classes = useStyles();
-
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
+
+  const handleLink = (username: string): void => {
+    navigate(`/${username}`);
+  };
+
+  const handleSubmutComment = (e: FormEvent) => {
+    e.preventDefault();
+    onSendComment(message);
+  };
+
   return (
     <div>
       <Dialog
@@ -51,7 +62,7 @@ const FullDialog: React.FC<FullDialogProps> = ({
         TransitionComponent={Transition}
         className={classes.dialogColumn}
       >
-        <div>
+        <div style={{ overflow: "hidden" }}>
           <AppBar sx={{ position: "relative", background: "#4A76A8" }}>
             <Toolbar>
               <IconButton
@@ -70,11 +81,15 @@ const FullDialog: React.FC<FullDialogProps> = ({
               </Button>
             </Toolbar>
           </AppBar>
-          <List>
+          <List sx={{ overflow: "scroll", height: "calc(100% - 75px)" }}>
             {messages?.map((message: any) => (
               <>
                 <ListItem button>
-                  <Avatar sx={{ marginRight: "10px" }} src={message?.userImg} />
+                  <Avatar
+                    onClick={() => handleLink(message?.username)}
+                    sx={{ marginRight: "10px" }}
+                    src={message?.userImg}
+                  />
                   <ListItemText
                     primary={message?.username}
                     secondary={message?.message}
@@ -84,21 +99,17 @@ const FullDialog: React.FC<FullDialogProps> = ({
                 <Divider />
               </>
             ))}
-            {/* <ListItem button>
-              <Avatar sx={{ marginRight: "10px" }} />
-              <ListItemText primary="Isaisa" secondary="Titania" className={classes.listItemText} />
-            </ListItem>
-            <Divider /> */}
-            {/* <ListItem button>
-              <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-            </ListItem> */}
           </List>
         </div>
-        <TextField
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="EDSDKCMSLDCMSLK"
-        />
+        <Box component="form" onSubmit={handleSubmutComment}>
+          <TextField
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Write down your comment"
+            required
+            sx={{ width: "100%" }}
+          />
+        </Box>
       </Dialog>
     </div>
   );

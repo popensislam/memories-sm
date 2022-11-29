@@ -94,7 +94,10 @@ export const likePost = async (req, res) => {
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
     new: true,
   });
-  res.json(updatedPost);
+
+  io.emit("getLikes", { postId: updatedPost._id, likes: updatedPost.likes });
+
+  res.status(200).json(updatedPost);
 };
 
 // COMMENTS ---------------------------------------------------
@@ -129,8 +132,7 @@ export const getComments = async (req, res) => {
   const { postId } = req.params;
   try {
     const postCom = await CommentsModel.find({ postId: postId });
-    console.log(postCom)
-    res.status(200).json({ comments: postCom.comments});
+    res.status(200).json({ comments: postCom[0].comments });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong.", error });
   }
