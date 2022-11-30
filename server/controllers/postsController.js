@@ -66,10 +66,10 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
 
-  console.log(_id);
   if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No post with that id");
 
   await PostMessage.findByIdAndRemove(_id);
+  await CommentsModel.deleteOne({ postId: _id });
 
   res.json({ message: "Post deleted succesfully" });
 };
@@ -117,10 +117,10 @@ export const commentPut = async (req, res) => {
       io.emit("getComments", updatedPost);
       res.status(200).json({ updatedPost });
     } else {
-      const post = { postId, comment: [{ username, userImg, message }] };
+      const post = { postId, comments: [{ username, userImg, message }] };
       const newPost = new CommentsModel(post);
       await newPost.save();
-      io.emit("getComments", { newPost });
+      io.emit("getComments", newPost);
       res.status(200).json({ newPost });
     }
   } catch (error) {

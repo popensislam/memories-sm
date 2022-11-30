@@ -1,5 +1,6 @@
 import { Posts } from "../../store/interfaces";
 
 export interface PostProps {
-  post: Posts
+  post: Posts,
+  useFetchGetPosts: Function
 }
