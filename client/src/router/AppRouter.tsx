@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { privateRoutes, publicRoutes } from 'router/routes'
+import { publicRoutes, privateRoutes } from 'router/routes'
 import { Container, Grid, useMediaQuery } from '@mui/material'
 
 import NavBar from 'components/NavBar/NavBar'
@@ -29,14 +29,12 @@ const IsAuth: FC<{ isTable: boolean }> = ({ isTable }) => (
     </>
 )
 const IsNotAuth: FC = () => (
-    <>
-        <Routes>
-            {publicRoutes.map((route) => (
-                <Route key={route.path} path={route.path} element={<route.element />} />
-            ))}
-            <Route path="*" element={<AuthPage />} />
-        </Routes>
-    </>
+    <Routes>
+        {publicRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={<route.element />} />
+        ))}
+        <Route path="*" element={<AuthPage />} />
+    </Routes>
 )
 
 const AppRouter = () => {

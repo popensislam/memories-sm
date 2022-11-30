@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, Fragment, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
     Button,
@@ -50,6 +50,7 @@ const FullDialog: React.FC<FullDialogProps> = ({ openDialog, handleCloseDialog, 
     const handleSubmutComment = (e: FormEvent) => {
         e.preventDefault()
         onSendComment(message)
+        setMessage('')
     }
 
     return (
@@ -76,8 +77,8 @@ const FullDialog: React.FC<FullDialogProps> = ({ openDialog, handleCloseDialog, 
                         </Toolbar>
                     </AppBar>
                     <List sx={{ overflow: 'scroll', height: 'calc(100% - 75px)' }}>
-                        {messages?.map((message: any) => (
-                            <>
+                        {messages?.map((message: any, i: number) => (
+                            <Fragment key={i}>
                                 <ListItem button>
                                     <Avatar
                                         onClick={() => handleLink(message?.username)}
@@ -91,7 +92,7 @@ const FullDialog: React.FC<FullDialogProps> = ({ openDialog, handleCloseDialog, 
                                     />
                                 </ListItem>
                                 <Divider />
-                            </>
+                            </Fragment>
                         ))}
                     </List>
                 </div>

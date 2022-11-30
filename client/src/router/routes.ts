@@ -1,8 +1,8 @@
 import React from "react";
 import { AUTH_PAGE, MAIN_PAGE, REG_PAGE } from "./consts";
-import AuthPage from "../pages/AuthPage";
-import RegPage from "../pages/RegPage";
-import MainPage from "../pages/MainPage";
+import AuthPage from "pages/AuthPage";
+import RegPage from "pages/RegPage";
+import MainPage from "pages/MainPage";
 
 interface IRoutes {
   path: string;
