@@ -1,4 +1,4 @@
-import RegContainer from "../containers/RegContainer/RegContainer";
+import RegContainer from "containers/RegContainer/RegContainer";
 
 
 const RegPage = () => {

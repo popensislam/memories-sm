@@ -18,18 +18,18 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import moment from "moment";
 
 // INTERFACES
-import { PostProps } from "../interfaces";
+import { PostProps } from "components/Posts/interfaces";
 
 // RTK
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setCurrentId } from "../../../store/slices/postsSlice";
-import { fetchDeletePost, fetchLikePost } from "../../../store/postServices";
+import { useAppDispatch, useAppSelector } from "store/hooks";
+import { setCurrentId } from "store/slices/postsSlice";
+import { fetchDeletePost, fetchLikePost } from "store/postServices";
 import {
   useDeletePostMutation,
   useGetPostCommentsFirstTimeQuery,
   useGetPostCommentsMutation,
   useLikePostMutation,
-} from "../../../store/postServices/memoriesApi";
+} from "store/postServices/memoriesApi";
 
 // STYLES
 import { useStyles } from "./styles";
@@ -42,6 +42,7 @@ const PostItem: FC<PostProps> = ({ post }) => {
   const { currentUser } = useAppSelector((state) => state.users);
   const [deletePost] = useDeletePostMutation();
   const [likePost] = useLikePostMutation();
+
   const [getComments] = useGetPostCommentsMutation();
   const { data: comments } = useGetPostCommentsFirstTimeQuery(post._id);
 

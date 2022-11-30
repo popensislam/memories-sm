@@ -3,12 +3,12 @@ import { useAppSelector } from "../../store/hooks";
 import { useStyles } from "./style";
 
 import { ChangeEvent, useEffect, useState } from "react";
-import CategoryPaper from "../../components/Papers/CategoryPaper";
-import PersInfoPaper from "../../components/Papers/PersInfoPaper";
-import FriendsPaper from "../../components/Papers/FriendsPaper";
-import SubscribersPaper from "../../components/Papers/SubscribersPaper";
-import AccountPostsPaper from "../../components/Papers/AccountPostsPaper";
-import PostItem from "../../components/Posts/Post/PostItem";
+import CategoryPaper from "components/Papers/CategoryPaper";
+import PersInfoPaper from "components/Papers/PersInfoPaper";
+import FriendsPaper from "components/Papers/FriendsPaper";
+import SubscribersPaper from "components/Papers/SubscribersPaper";
+import AccountPostsPaper from "components/Papers/AccountPostsPaper";
+import PostItem from "components/Posts/Post/PostItem";
 import {
   useAddPostMutation,
   useGetAllPostsQuery,

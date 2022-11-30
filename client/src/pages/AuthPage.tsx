@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import AuthContainer from "../containers/AuthContainer/AuthContainer";
+import AuthContainer from "containers/AuthContainer/AuthContainer";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 
-import { useRegUserMutation, useSignInUserMutation } from "../store/authServices/authApi";
-import { useAppDispatch } from "../store/hooks";
-import { setCurrentUser } from "../store/slices/userSlice";
+import { useRegUserMutation, useSignInUserMutation } from "store/authServices/authApi";
+import { useAppDispatch } from "store/hooks";
+import { setCurrentUser } from "store/slices/userSlice";
 
 export type AuthDataTypes = {
   firstName: string;

@@ -35,10 +35,19 @@ export const authApi = createApi({
         },
       }),
     }),
-    getUserByParams: builder.query<any, any>({
+    getUserByParams: builder.query<any, string | undefined>({
       query: (username) => `/${username}`,
+    }),
+    getAllUsers: builder.query<void, void>({
+      query: () => `/all`,
     }),
   }),
 });
 
-export const { useSignInUserMutation, useRegUserMutation, useGetUserQuery, useGetUserByParamsQuery } = authApi;
+export const {
+  useSignInUserMutation,
+  useRegUserMutation,
+  useGetUserQuery,
+  useGetUserByParamsQuery,
+  useGetAllUsersQuery,
+} = authApi;
