@@ -116,3 +116,28 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const reqeustFriend = async (req, res) => {
+  const { first_name, last_name, username, image } = req.body;
+  const token = req.headers.authorization.split(" ")[1];
+  try {
+    const decodedData = await jwt.verify(token, process.env.TOKEN_KEY);
+    const user = await UserModel.findById(decodedData.id);
+    user.friends.push({ first_name, last_name, username, image, state: "request" });
+    await UserModel.findByIdAndUpdate(user.id, user);
+
+    const user2 = await UserModel.find({ username });
+    user2.friends.push({
+      first_name: user.first_name,
+      last_name: user2.last_name,
+      username: user2.username,
+      image: user2.image,
+      state: "sent",
+    });
+    await UserModel.findByIdAndUpdate(user2.id, user2);
+
+    res.status(200).json({ message: "Success" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
